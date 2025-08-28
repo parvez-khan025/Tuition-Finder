@@ -8,9 +8,10 @@
 <body>
     <div class="container">
         <h2>Register</h2>
-        <form action="register.jsp" method="post">
-            <label for="username">Username</label>
-            <input type="text" name="username" required>
+        <form action="register.jsp" method="post" onsubmit="return validateForm()">
+            
+            <label for="name">Full Name</label>
+            <input type="text" name="name" required>
 
             <label for="email">Email</label>
             <input type="email" name="email" required>
@@ -18,8 +19,40 @@
             <label for="password">Password</label>
             <input type="password" name="password" required>
 
+            <label for="userType">User Type</label>
+            <select name="userType" id="userType" required>
+                <option value="">-- Select User Type --</option>
+                <option value="Student">Student</option>
+                <option value="Tutor">Tutor</option>
+            </select>
+
+            <label for="qualification">Last Education Qualification</label>
+            <select name="qualification" id="qualification" required>
+                <option value="">-- Select Qualification --</option>
+                <option value="Masters">Masters</option>
+                <option value="Undergraduation">Undergraduation</option>
+                <option value="HSC">HSC</option>
+                <option value="SSC">SSC</option>
+                <option value="Below SSC">Below SSC</option>
+            </select>
+
             <button type="submit">Register</button>
         </form>
     </div>
+
+    <script>
+        function validateForm() {
+            const userType = document.getElementById("userType").value;
+            const qualification = document.getElementById("qualification").value;
+
+            // Tutor must have more than HSC
+            if (userType === "Tutor" && (qualification === "SSC" || qualification === "Below SSC" || qualification === "HSC")) {
+                alert("A Tutor must have education qualification above HSC (Undergraduation or Masters).");
+                return false; // Prevent form submission
+            }
+            return true;
+        }
+    </script>
+    
 </body>
 </html>

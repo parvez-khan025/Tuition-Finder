@@ -27,9 +27,9 @@
     PreparedStatement ps = null;
 
     try {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
+        Class.forName("oracle.jdbc.OracleDriver");
         conn = DriverManager.getConnection(
-            "jdbc:oracle:thin:@//192.168.1.50:1521/tuitionDB", "SYSTEM", "a12345"
+            "jdbc:oracle:thin:@//192.168.0.100:1521", "SYSTEM", "a12345"
         );
 
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";

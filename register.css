@@ -1,4 +1,4 @@
-/* Reset some defaults */
+/* Reset defaults */
 * {
     margin: 0;
     padding: 0;
@@ -15,61 +15,97 @@ body {
     align-items: center;
 }
 
-/* Container Styling */
+/* Container - Glass Effect */
 .container {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px 40px;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    padding: 35px 40px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    animation: fadeIn 0.8s ease-in-out;
 }
 
 h2 {
     text-align: center;
-    color: #2c3e50;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 600;
     margin-bottom: 25px;
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
 }
 
-/* Input Fields */
+/* Labels */
 label {
-    font-weight: bold;
+    font-weight: 500;
     margin-top: 15px;
     display: block;
-    color: #34495e;
+    color: #f5f5f5;
+    font-size: 14px;
+    letter-spacing: 0.3px;
 }
 
+/* Input & Select Fields */
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+select {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    transition: border 0.3s;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    transition: 0.3s;
 }
 
-input:focus {
-    border-color: #3498db;
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus,
+select:focus {
+    border-color: #00c6ff;
     outline: none;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
 }
 
-/* Button Styling */
+/* Button */
 button {
     margin-top: 25px;
     width: 100%;
-    padding: 12px;
-    background: #3498db;
-    color: white;
+    padding: 14px;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #0c08e3;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 114, 255, 0.35);
 }
 
 button:hover {
-    background: #2980b9;
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 114, 255, 0.5);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
