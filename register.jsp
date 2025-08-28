@@ -2,9 +2,11 @@
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
 <%
-    String username = request.getParameter("username");
+    String name = request.getParameter("name");
     String email = request.getParameter("email");
     String password = request.getParameter("password");
+    String userType = request.getParameter("userType");
+    String qualification = request.getParameter("qualification");
 
     // Hashing the password using SHA-256
     String hashedPassword = null;
@@ -32,19 +34,27 @@
             "jdbc:oracle:thin:@//192.168.0.100:1521", "SYSTEM", "a12345"
         );
 
-        String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO webusers (name, email, password, user_type, qualification) VALUES (?, ?, ?, ?, ?)";
         ps = conn.prepareStatement(sql);
-        ps.setString(1, username);
+        ps.setString(1, name);
         ps.setString(2, email);
         ps.setString(3, hashedPassword);
+        ps.setString(4, userType);
+        ps.setString(5, qualification);
 
         int result = ps.executeUpdate();
 
         if (result > 0) {
-            out.println("<h3>Registration successful!</h3>");
-        } else {
-            out.println("<h3>Registration failed.</h3>");
-        }
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Registration successful! Redirecting to login page...');");
+                    out.println("window.location.href = 'login.html';");
+                    out.println("</script>");
+                } else {
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Registration failed. Please try again.');");
+                    out.println("window.location.href = 'register.html';");
+                    out.println("</script>");
+                }
     } catch (Exception e) {
         out.println("<h3>Error: " + e.getMessage() + "</h3>");
     } finally {
