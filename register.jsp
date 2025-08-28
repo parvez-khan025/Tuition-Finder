@@ -27,21 +27,12 @@
     PreparedStatement ps = null;
 
     try {
-<<<<<<< HEAD
-        Class.forName("oracle.jdbc.OracleDriver");
-        conn = DriverManager.getConnection(
-            "jdbc:oracle:thin:@//192.168.0.100:1521", "SYSTEM", "a12345"
-        );
-
-        String sql = "INSERT INTO tusers (username, email, password) VALUES (?, ?, ?)";
-=======
         Class.forName("oracle.jdbc.driver.OracleDriver");
         conn = DriverManager.getConnection(
             "jdbc:oracle:thin:@//192.168.1.50:1521/tuitionDB", "SYSTEM", "a12345"
         );
 
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
->>>>>>> 597282772e67fc6b995af3a5b4d27ebf1dcab7f2
         ps = conn.prepareStatement(sql);
         ps.setString(1, username);
         ps.setString(2, email);
@@ -60,8 +51,4 @@
         try { if (ps != null) ps.close(); } catch (Exception ignored) {}
         try { if (conn != null) conn.close(); } catch (Exception ignored) {}
     }
-<<<<<<< HEAD
 %>
-=======
-%>
->>>>>>> 597282772e67fc6b995af3a5b4d27ebf1dcab7f2
