@@ -2,6 +2,10 @@
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
 <%
+    // Declare variables here so they are visible everywhere
+    String message = null;
+    String redirectPage = null;
+
     // Handle form submission only if request method is POST
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         String name = request.getParameter("name");
@@ -22,46 +26,44 @@
             }
             hashedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            out.println("Error hashing password.");
-            return;
+            message = "Error hashing password.";
+            redirectPage = "register.jsp";
         }
 
-        // Oracle DB connection
-        Connection conn = null;
-        PreparedStatement ps = null;
+        if (hashedPassword != null) {
+            Connection conn = null;
+            PreparedStatement ps = null;
 
-        try {
-            Class.forName("oracle.jdbc.OracleDriver");
-            conn = DriverManager.getConnection(
-                "jdbc:oracle:thin:@//192.168.0.100:1521", "SYSTEM", "a12345"
-            );
+            try {
+                Class.forName("oracle.jdbc.OracleDriver");
+                conn = DriverManager.getConnection(
+                    "jdbc:oracle:thin:@//192.168.0.100", "SYSTEM", "a12345"
+                );
 
-            String sql = "INSERT INTO webusers (name, email, password, user_type, qualification) VALUES (?, ?, ?, ?, ?)";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, name);
-            ps.setString(2, email);
-            ps.setString(3, hashedPassword);
-            ps.setString(4, userType);
-            ps.setString(5, qualification);
+                String sql = "INSERT INTO webusers (name, email, password, user_type, qualification) VALUES (?, ?, ?, ?, ?)";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, name);
+                ps.setString(2, email);
+                ps.setString(3, hashedPassword);
+                ps.setString(4, userType);
+                ps.setString(5, qualification);
 
-            int result = ps.executeUpdate();
+                int result = ps.executeUpdate();
 
-            if (result > 0) {
-                out.println("<script type='text/javascript'>");
-                out.println("alert('Registration successful! Redirecting to login page...');");
-                out.println("window.location.href = 'login.jsp';");
-                out.println("</script>");
-            } else {
-                out.println("<script type='text/javascript'>");
-                out.println("alert('Registration failed. Please try again.');");
-                out.println("window.location.href = 'register.jsp';");
-                out.println("</script>");
+                if (result > 0) {
+                    message = "Registration successful!";
+                    redirectPage = "login.jsp";
+                } else {
+                    message = "Registration failed. Please try again.";
+                    redirectPage = "register.jsp";
+                }
+            } catch (Exception e) {
+                message = "Error: " + e.getMessage();
+                redirectPage = "register.jsp";
+            } finally {
+                try { if (ps != null) ps.close(); } catch (Exception ignored) {}
+                try { if (conn != null) conn.close(); } catch (Exception ignored) {}
             }
-        } catch (Exception e) {
-            out.println("<h3>Error: " + e.getMessage() + "</h3>");
-        } finally {
-            try { if (ps != null) ps.close(); } catch (Exception ignored) {}
-            try { if (conn != null) conn.close(); } catch (Exception ignored) {}
         }
     }
 %>
@@ -72,9 +74,21 @@
     <meta charset="UTF-8">
     <title>User Registration</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
-<%@ include file="header.jsp" %>
+<%-- <%@ include file="header.jsp" %> --%>
+
+    <% if (message != null) { %>
+        <div class="message-box <%= (message.contains("successful")) ? "success" : "error" %>">
+            <p><%= message %></p>
+            <form action="<%= redirectPage %>" method="get">
+                <button class="btn-ok" type="submit">OK</button>
+            </form>
+        </div>
+    <% } %>
+
     <div class="container">
         <h2>Register</h2>
         <form action="register.jsp" method="post" onsubmit="return validateForm()">

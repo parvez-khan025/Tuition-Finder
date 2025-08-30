@@ -29,7 +29,7 @@
         try {
             Class.forName("oracle.jdbc.OracleDriver");
             conn = DriverManager.getConnection(
-                "jdbc:oracle:thin:@//192.168.0.100:1521/XEPDB1", "SYSTEM", "a12345"
+                "jdbc:oracle:thin:@//192.168.0.100", "SYSTEM", "a12345"
             );
 
             String sql = "SELECT user_type FROM users WHERE email=? AND password=?";
